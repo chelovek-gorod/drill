@@ -17,9 +17,11 @@ export const events = createEnum([
     'shakeScreen',
     'scrollBg',
     'addStones',
+    'addSparks',
     'landingOnLayer',
     'layerCleared',
     'layerSetDamage',
+    'botLandingDone',
 ])
 
 export function screenResize( data ) {
@@ -51,12 +53,15 @@ export function scrollBg( data ) {
     EventHub.emit( events.scrollBg, data )
 }
 
-export function addStones( isStone ) {
-    EventHub.emit( events.addStones, isStone )
+export function addStones( type ) {
+    EventHub.emit( events.addStones, type )
+}
+export function addSparks(data) {
+    EventHub.emit( events.addSparks, data )
 }
 
-export function landingOnLayer() {
-    EventHub.emit( events.landingOnLayer )
+export function landingOnLayer(type) {
+    EventHub.emit( events.landingOnLayer, type )
 }
 
 export function layerCleared() {
@@ -65,4 +70,8 @@ export function layerCleared() {
 
 export function layerSetDamage(value) {
     EventHub.emit( events.layerSetDamage, value )
+}
+
+export function botLandingDone() {
+    EventHub.emit( events.botLandingDone )
 }

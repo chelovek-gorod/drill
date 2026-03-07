@@ -14,12 +14,14 @@ const TIME_IN = 1200
 const SPEED_IN = HEIGHT_IN / TIME_IN
 const ALPHA_SPEED = 1 / (ALPHA_IN * SPEED_IN)
 
-export const TYPE = createEnum(['bricks', 'stones'])
+const FRAMES = 6 // dmg0 ... dmg5 
+
+export const TYPE = createEnum(['brick', 'stone', 'soil'])
 
 function getHpList(hp) {
-    const step = hp * 0.1
+    const step = hp / FRAMES
     const list = []
-    for(let i = 9; i > 0; i--) list.push(step * i)
+    for(let i = FRAMES - 1; i > 0; i--) list.push(step * i)
     return list
 }
 
@@ -58,7 +60,7 @@ export default class Layer extends Container {
 
         this.visible = true
         this.y = HEIGHT_IN
-        scrollBg({size: HEIGHT_IN * 0.5, speed: SPEED_IN * 0.5})
+        scrollBg({ size: HEIGHT_IN * 0.5, speed: SPEED_IN * 0.5 })
         tickerAdd(this)
     }
 
@@ -77,13 +79,13 @@ export default class Layer extends Container {
         while (this.hp < this.hpList[0]) this.hpList.shift()
         if (this.hpList.length === 0) return this.killDamage()
 
-        const texture = this.type + '_dmg' + (10 - this.hpList.length)
+        const texture = this.type + '_dmg' + (FRAMES - this.hpList.length)
         this.children[ this.children.length - 1 ].texture = atlases.ground.textures[ texture ]
     }
 
     killDamage() {
         this.children[ this.children.length - 1 ].destroy()
-        addStones(this.type === TYPE.stones)
+        addStones(this.type)
 
         if (this.children.length) {
             this.hp = this.hpMax
@@ -100,6 +102,7 @@ export default class Layer extends Container {
         }
 
         this.visible = false
+        console.log('layerCleared')
         layerCleared()
     }
 
@@ -111,7 +114,7 @@ export default class Layer extends Container {
                 tickerRemove(this)
                 this.isStart = false
                 shakeScreen({x: 3, y: 12})
-                landingOnLayer()
+                landingOnLayer(this.type)
             }
             return
         }

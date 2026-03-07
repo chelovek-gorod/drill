@@ -1,11 +1,10 @@
 import { Container, Sprite } from "pixi.js";
 import { tickerAdd } from "../../../app/application";
 import { atlases, sounds } from "../../../app/assets";
-import { EventHub, events, layerSetDamage, shakeScreen } from "../../../app/events";
+import { addSparks, EventHub, events, layerSetDamage, shakeScreen, botLandingDone } from "../../../app/events";
 import { soundLoopPlay, soundLoopStop, soundPlay } from "../../../app/sound";
-import { createEnum, moveToTarget } from "../../../utils/functions";
+import { createEnum, getRandom, moveToTarget } from "../../../utils/functions";
 import Smoke from "../../effects/Smoke";
-import { TYPE } from "./layer";
 import Stone from "./Stone";
 
 const STATE = createEnum(['DRILL', 'GUN', 'FLY', 'IDLE', 'LANDING'])
@@ -13,17 +12,18 @@ const STATE = createEnum(['DRILL', 'GUN', 'FLY', 'IDLE', 'LANDING'])
 const DRILLING_TIME = 600
 
 export default class Bot extends Container {
-    constructor(stonesType, power = 0.06) {
+    constructor(power = 0.06) {
         super()
 
         this.power = power
 
         this.state = STATE.IDLE
 
-        this.stonesType = stonesType
+        this.stonesType = null
 
         this.body = new Sprite(atlases.bot.textures.body)
         this.body.anchor.set(0.5)
+        this.bodyStartY = this.body.y
 
         this.lamp = new Sprite(atlases.bot.textures.lamp)
         this.lamp.anchor.set(0.5)
@@ -76,26 +76,49 @@ export default class Bot extends Container {
         this.idleOffsetGunsY = 6
         this.idleOffsetHeadY = 4
 
+        this.effectsList = ['smoke', 'sparks', 'stone']
+        this.effectsIndex = 0
         this.drillOffset = 0
         this.drillOffsetMax = 9
         this.drillSpeed = 0.3
         this.drillTimeout = DRILLING_TIME
         this.isDrillIn = true
-        this.drillSmokeIsLeft = true
+        this.isDrillEffectLeft = true
         this.hotSpeed = 0.0012
         this.iceSpeed = 0.0003
         this.isHot = false
 
+        this.flyEyeMaxScale = 1.12
+        this.flyEyeGrowSpeed = 0.0006
+        this.flyEyePoint = {x: 3, y: 7}
+        this.flyHandTargetRotationLeft = -Math.PI * 0.25
+        this.flyHandTargetRotationRight = -Math.PI * 0.15
+        this.flyHandTransitionSpeed = 0.0012
+        this.flyHandWobbleAmplitude = 0.03
+        this.flyHandWobbleSpeed = 0.006
+        this.flyBodyShiftAmount = 9
+        this.flyBodyShiftSpeed = 0.006
+
         this.landShock = 0
-        this.landShockSpeed = 0.06
-        this.landShockRecover = 0.03
+        this.landShockSpeed = 0.006
+
+        this.gunTime = 0
+        this.gunSpeed = 0.12
+        this.gunPower = 18 // for back offset, not attack power
+        this.gunKick = 3
+        this.gunHitWindow = 0.92
+        this.gunHitDone = false
+
+        this.flyTime = 0
 
         this.addChild(this.right, this.body, this.head, this.lamp, this.left)
 
         this.position.set(0, 50)
 
-        EventHub.on( events.landingOnLayer, this.hitGround, this )
+        EventHub.on( events.landingOnLayer, this.startLanding, this )
+        EventHub.on( events.layerCleared, this.startFly, this )
 
+        this.startFly()
         tickerAdd(this)
     }
 
@@ -117,14 +140,52 @@ export default class Bot extends Container {
         this.right.rotation = 0
     }
 
+    resetToDefault() {
+        // Тело
+        this.body.scale.set(1)
+        this.body.y = this.bodyStartY
+        this.body.x = 0
+        this.body.rotation = 0
+
+        // Руки
+        this.setGunsOnStart()
+
+        // Голова
+        this.head.y = this.head.startY
+
+        // Глаз
+        this.head_eye.x = this.head_eye.startPoint.x
+        this.head_eye.y = this.head_eye.startPoint.y
+        this.head_eye.scale.set(0.92)
+        this.head_eye.targetPoint = null
+
+        // Лампа
+        this.lamp.tint = null
+
+        // Красные части (остывание)
+        this.left_red.alpha = 0
+        this.right_red.alpha = 0
+        this.isHot = false
+
+        // Общий поворот
+        this.rotation = 0
+
+        // Счётчики состояний
+        this.flyTime = 0
+        this.gunTime = 0
+        this.gunHitDone = false
+        this.landShock = 0
+        // idleTime не сбрасываем, чтобы сохранить плавность при возврате в IDLE
+    }
+
     startDrill() {
-        if (this.state === STATE.DRILL) return
+        if (this.state !== STATE.IDLE) return
 
         //soundPlay(sounds.se_drill)
 
         soundLoopPlay(sounds.se_drill_start, sounds.se_drill_loop, sounds.se_drill_end, 'drill')
 
-        this.setGunsOnStart()
+        this.resetToDefault()
 
         this.drillTimeout = Infinity
         this.isDrillIn = true
@@ -140,36 +201,64 @@ export default class Bot extends Container {
     stopDrilling() {
         if (this.state !== STATE.DRILL) return
 
-        this.setGunsOnStart()
+        this.resetToDefault()
         this.state = STATE.IDLE
         this.drillTimeout = 0
 
         soundLoopStop('drill')
     }
 
-    hitGround() {
+    startLanding(stonesType) {
+        this.stonesType = stonesType
+
+        this.resetToDefault()
+
         this.landShock = 1
+        this.state = STATE.LANDING
         soundPlay(sounds.se_bot_landing)
+        this.addChild(new Smoke(-40, 60))
+        this.addChild(new Smoke(40, 60))
     }
 
-    test() {
-        if (this.state !== STATE.IDLE) return false
+    startAttack(direction) {
+        if (this.state !== STATE.IDLE) return
+        // direction должен быть 1 (вправо) или -1 (влево)
+        if (direction !== 1 && direction !== -1) return
 
-        this.power *= 2
-        this.scale.x *= -1
+        this.resetToDefault()
+        this.scale.x = direction
 
-        this.setGunsOnStart()
-        this.left.rotation = -Math.PI * 0.25
-        this.right.rotation = -Math.PI * 0.15
-        this.state = STATE.GUN
+        this.head_eye.position.set(12, 5)
+        this.head_eye.scale.set(0.5)
+
+        this.left.rotation = this.flyHandTargetRotationLeft
+        this.right.rotation = this.flyHandTargetRotationRight
+
+        this.gunTime = 0
+        this.gunHitDone = false
+
         this.lamp.tint = 0xFF0000
-        setTimeout( () => {
-            this.setGunsOnStart()
-            this.state = STATE.IDLE
-            this.lamp.tint = null
-        }, 2000)
 
-        return true
+        this.state = STATE.GUN
+    }
+
+    stopAttack() {
+        if (this.state !== STATE.GUN) return
+
+        this.resetToDefault()
+        this.state = STATE.IDLE
+    }
+
+    startFly() {
+        if (this.state === STATE.FLY) return
+    
+        this.stopDrilling() // останавливаем бурение, если оно было
+
+        this.resetToDefault()
+    
+        this.head_eye.position.set(this.flyEyePoint.x, this.flyEyePoint.y)
+        this.flyTime = 0
+        this.state = STATE.FLY
     }
 
     idle(delta) {
@@ -204,50 +293,116 @@ export default class Bot extends Container {
         if (this.isDrillIn) {
             this.left.x = Math.min(this.left.startX + this.drillOffsetMax, this.left.x + offset)
             this.left.y = Math.min(this.left.startY + this.drillOffsetMax, this.left.y + offset)
-
+    
             this.right.x = Math.min(this.right.startX + this.drillOffsetMax, this.right.x + offset)
             this.right.y = Math.min(this.right.startY + this.drillOffsetMax, this.right.y + offset)
-
-            if (this.left.x === this.left.startX + this.drillOffsetMax) this.isDrillIn = false
+    
+            if (this.left.x === this.left.startX + this.drillOffsetMax) {
+                this.isDrillIn = false
+                this.setLayerDamage()
+            }
         } else {
             this.left.x = Math.max(this.left.startX, this.left.x - offset)
             this.left.y = Math.max(this.left.startY, this.left.y - offset)
-
+    
             this.right.x = Math.max(this.right.startX, this.right.x - offset)
             this.right.y = Math.max(this.right.startY, this.right.y - offset)
-
+    
             if (this.left.x === this.left.startX) this.isDrillIn = true
         }
-
-        this.drillSmokeIsLeft = !this.drillSmokeIsLeft
-        const offsetX = -50 + Math.random() * 100
-        const offsetY = -50 + Math.random() * 100
-        const xx = (this.drillSmokeIsLeft ? this.left.x : this.right.x) + 25 + offsetX
-        const yy = (this.drillSmokeIsLeft ? this.left.y : this.right.y) + 50 + offsetY
-        if (this.drillSmokeIsLeft) this.addChild( new Smoke(xx, yy) )
-        else this.addChild( new Smoke(xx, yy) )
-        if(Math.random() > 0.7) this.addChild( new Stone(xx, yy, TYPE.stones === this.stonesType) )
-
+    
         if (this.left_red.alpha < 1) {
             const alpha = Math.min(1, this.left_red.alpha + this.hotSpeed * delta)
             this.left_red.alpha = alpha
             this.right_red.alpha = alpha
         }
-
-        layerSetDamage(this.power)
-        shakeScreen({x: 5, y: 5})
-
+    
         this.drillTimeout -= delta
         if (this.drillTimeout <= 0) this.stopDrilling()
     }
 
+    setLayerDamage() {
+        const xBase = this.isDrillEffectLeft ? this.left.x + 5 : this.right.x + 55
+        const yBase = this.isDrillEffectLeft ? this.left.y + 160 : this.right.y + 140
+    
+        switch ( this.effectsList[this.effectsIndex] ) {
+            case 'smoke':
+                this.addChild(new Smoke(xBase, yBase))
+                break
+            case 'sparks':
+                addSparks({
+                    x: xBase,
+                    y: yBase,
+                    count: getRandom(30, 50),
+                    angle: Math.PI * 1.5,
+                    spread: Math.PI * 0.75
+                })
+                break
+            case 'stone':
+                this.addChild(new Stone(xBase, yBase, this.stonesType))
+                break
+        }
+    
+        this.isDrillEffectLeft = !this.isDrillEffectLeft
+        this.effectsIndex = (this.effectsIndex + 1) % this.effectsList.length
+
+        layerSetDamage(this.power)
+        shakeScreen({x: 5, y: 5})
+    }
+
+    fly(delta) {
+        this.flyTime += delta
+
+        const currentEyeScale = this.head_eye.scale.x
+        const newEyeScale = Math.min(
+            this.flyEyeMaxScale, currentEyeScale + this.flyEyeGrowSpeed * delta
+        )
+        this.head_eye.scale.set(newEyeScale)
+    
+
+        if (this.left.rotation > this.flyHandTargetRotationLeft) {
+            this.left.rotation = Math.max(
+                this.flyHandTargetRotationLeft,
+                this.left.rotation - this.flyHandTransitionSpeed * delta
+            )
+        }
+
+        if (this.left.rotation <= this.flyHandTargetRotationLeft) {
+            const wobble = Math.sin(this.flyTime * this.flyHandWobbleSpeed) * this.flyHandWobbleAmplitude
+            this.left.rotation = this.flyHandTargetRotationLeft + wobble
+        }
+    
+        if (this.right.rotation > this.flyHandTargetRotationRight) {
+            this.right.rotation = Math.max(
+                this.flyHandTargetRotationRight,
+                this.right.rotation - this.flyHandTransitionSpeed * delta
+            )
+        }
+        if (this.right.rotation <= this.flyHandTargetRotationRight) {
+            const wobble = Math.sin(this.flyTime * this.flyHandWobbleSpeed + 1.0) * this.flyHandWobbleAmplitude
+            this.right.rotation = this.flyHandTargetRotationRight + wobble
+        }
+    
+        if (this.body.y < this.bodyStartY + this.flyBodyShiftAmount) {
+            this.body.y = Math.min(
+                this.bodyStartY + this.flyBodyShiftAmount,
+                this.body.y + this.flyBodyShiftSpeed * delta
+            )
+        }
+    }
+
     landing(delta) {
-        this.landShock -= delta * this.landShockRecover
+        this.landShock -= delta * this.landShockSpeed
 
         if (this.landShock <= 0) {
             this.body.scale.set(1)
+            this.body.y = this.bodyStartY
+            this.head.y = this.head.startY
+            this.left.y = this.left.startY
+            this.right.y = this.right.startY
             this.landShock = 0
             this.state = STATE.IDLE
+            botLandingDone()
             return
         }
         
@@ -259,6 +414,37 @@ export default class Bot extends Container {
         this.head.y = this.head.startY - this.landShock * 10
     }
 
+    attacking(delta) {
+        this.gunTime += delta * this.gunSpeed
+        const wave = Math.sin(this.gunTime)
+    
+        // делаем удар резче
+        const punch = Math.max(0, wave)
+        const offset = punch * this.gunPower
+    
+        // движение буров вперед
+        this.left.x = this.left.startX + offset
+        this.left.y = this.left.startY + offset * 0.6
+    
+        this.right.x = this.right.startX + offset
+        this.right.y = this.right.startY + offset * 0.6
+        // лёгкий recoil корпуса
+        this.body.x = punch * -this.gunKick
+    
+        // момент удара
+        if (punch > this.gunHitWindow) {
+            if (!this.gunHitDone) {
+                this.gunHitDone = true
+                shakeScreen({x:6,y:3})
+                //soundPlay(sounds.se_drill_hit)
+                EventHub.emit(events.botMeleeHit)
+            }
+    
+        } else {
+            this.gunHitDone = false
+        }
+    }
+
     tick(delta) {
         // lamp
         this.lampTime += delta * this.lampSpeed
@@ -266,9 +452,11 @@ export default class Bot extends Container {
         this.lamp.scale.set(lampValue)
         this.lamp.alpha = lampValue
 
-        if (this.state === STATE.IDLE) this.idle(delta)
+        if (this.state === STATE.GUN) this.attacking(delta)
         else if (this.state === STATE.DRILL) this.drilling(delta)
+        else if (this.state === STATE.FLY) this.fly(delta)
         else if (this.state === STATE.LANDING) this.landing(delta)
+        else this.idle(delta)
 
         if (this.state !== STATE.DRILL && this.isHot) {
             const alpha = Math.max(0, this.left_red.alpha - this.iceSpeed * delta)
@@ -279,6 +467,7 @@ export default class Bot extends Container {
     }
 
     kill() {
-        EventHub.off( events.landingOnLayer, this.hitGround, this )
+        EventHub.off( events.landingOnLayer, this.startLanding, this )
+        EventHub.off( events.layerCleared, this.startFly, this )
     }
 }

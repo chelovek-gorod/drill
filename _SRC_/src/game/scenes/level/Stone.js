@@ -3,8 +3,6 @@ import { kill, tickerAdd } from "../../../app/application";
 import { atlases } from "../../../app/assets";
 import { createEnum } from "../../../utils/functions";
 
-const TYPE = createEnum(['part_brick', 'part_stone'])
-
 // Константы физики
 const GRAVITY = 0.003
 const FADE_SPEED = 0.003
@@ -30,8 +28,8 @@ const TWO_PI = Math.PI * 2
 let direction = Math.random() > 0.5 ? 1 : -1
 
 export default class Stone extends Sprite {
-    constructor(x, y, isStone = true) {
-        super( atlases.ground.textures[isStone ? TYPE.part_stone : TYPE.part_brick] )
+    constructor(x, y, type) {
+        super( atlases.ground.textures[ 'part_' + type ] )
         
         this.direction = direction
         direction *= -1

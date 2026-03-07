@@ -30,6 +30,8 @@ export const images = {
     bg_top: 'bg0.png',
     bg1: 'bg1.png',
     bg2: 'bg2.png',
+
+    spark: 'spark.png',
 }
 export const atlases = {
     bot: 'bot.json',

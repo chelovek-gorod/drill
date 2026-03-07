@@ -12,7 +12,7 @@ export default class Smoke extends AnimatedSprite {
         this.position.set(x, y)
         this.rotation = Math.random() * (Math.PI * 2)
         this.scale.set( 1 + Math.random() )
-        this.alpha = 0.75 + Math.random() * 0.25
+        this.alpha = 0.4 + Math.random() * 0.4
 
         this.animationSpeed = 0.5
         this.loop = false

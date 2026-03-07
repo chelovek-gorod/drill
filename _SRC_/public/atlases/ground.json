@@ -1,22 +1,22 @@
 {
   "frames": {
-    "bricks_dmg7": {
+    "soil_dmg0": {
       "frame": {
         "x": 4,
         "y": 4,
-        "w": 280,
-        "h": 228
+        "w": 208,
+        "h": 226
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
         "x": 0,
-        "y": 0,
-        "w": 280,
-        "h": 228
+        "y": 2,
+        "w": 208,
+        "h": 226
       },
       "sourceSize": {
-        "w": 280,
+        "w": 208,
         "h": 228
       },
       "pivot": {
@@ -24,23 +24,47 @@
         "y": 0.5
       }
     },
-    "bricks_dmg8": {
+    "soil_dmg1": {
       "frame": {
-        "x": 292,
+        "x": 4,
+        "y": 238,
+        "w": 208,
+        "h": 226
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 208,
+        "h": 226
+      },
+      "sourceSize": {
+        "w": 208,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "stone_dmg4": {
+      "frame": {
+        "x": 4,
+        "y": 472,
+        "w": 232,
+        "h": 224
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
         "y": 4,
-        "w": 280,
-        "h": 228
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 280,
-        "h": 228
+        "w": 232,
+        "h": 224
       },
       "sourceSize": {
-        "w": 280,
+        "w": 232,
         "h": 228
       },
       "pivot": {
@@ -48,252 +72,12 @@
         "y": 0.5
       }
     },
-    "bricks_dmg9": {
-      "frame": {
-        "x": 580,
-        "y": 4,
-        "w": 280,
-        "h": 228
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 280,
-        "h": 228
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "bricks_dmg0": {
-      "frame": {
-        "x": 4,
-        "y": 240,
-        "w": 280,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 280,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "bricks_dmg1": {
-      "frame": {
-        "x": 292,
-        "y": 240,
-        "w": 280,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 280,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "bricks_dmg2": {
-      "frame": {
-        "x": 580,
-        "y": 240,
-        "w": 280,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 280,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "bricks_dmg3": {
-      "frame": {
-        "x": 4,
-        "y": 471,
-        "w": 280,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 280,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "bricks_dmg4": {
-      "frame": {
-        "x": 292,
-        "y": 471,
-        "w": 280,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 280,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "bricks_dmg5": {
-      "frame": {
-        "x": 580,
-        "y": 471,
-        "w": 280,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 280,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "bricks_dmg6": {
-      "frame": {
-        "x": 4,
-        "y": 702,
-        "w": 280,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 280,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 280,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg0": {
-      "frame": {
-        "x": 4,
-        "y": 933,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg1": {
-      "frame": {
-        "x": 4,
-        "y": 1164,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg2": {
+    "soil_dmg2": {
       "frame": {
         "x": 220,
-        "y": 933,
+        "y": 4,
         "w": 208,
-        "h": 223
+        "h": 226
       },
       "rotated": false,
       "trimmed": true,
@@ -301,7 +85,7 @@
         "x": 0,
         "y": 2,
         "w": 208,
-        "h": 223
+        "h": 226
       },
       "sourceSize": {
         "w": 208,
@@ -312,60 +96,12 @@
         "y": 0.5
       }
     },
-    "stones_dmg3": {
-      "frame": {
-        "x": 292,
-        "y": 702,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg4": {
-      "frame": {
-        "x": 508,
-        "y": 702,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg5": {
+    "soil_dmg3": {
       "frame": {
         "x": 220,
-        "y": 1164,
+        "y": 238,
         "w": 208,
-        "h": 223
+        "h": 226
       },
       "rotated": false,
       "trimmed": true,
@@ -373,10 +109,298 @@
         "x": 0,
         "y": 2,
         "w": 208,
-        "h": 223
+        "h": 226
       },
       "sourceSize": {
         "w": 208,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "stone_dmg5": {
+      "frame": {
+        "x": 244,
+        "y": 472,
+        "w": 232,
+        "h": 224
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 4,
+        "w": 232,
+        "h": 224
+      },
+      "sourceSize": {
+        "w": 232,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soil_dmg4": {
+      "frame": {
+        "x": 436,
+        "y": 4,
+        "w": 208,
+        "h": 226
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 208,
+        "h": 226
+      },
+      "sourceSize": {
+        "w": 208,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soil_dmg5": {
+      "frame": {
+        "x": 436,
+        "y": 238,
+        "w": 208,
+        "h": 226
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 208,
+        "h": 226
+      },
+      "sourceSize": {
+        "w": 208,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "brick_dmg0": {
+      "frame": {
+        "x": 484,
+        "y": 472,
+        "w": 280,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 280,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 280,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "brick_dmg1": {
+      "frame": {
+        "x": 772,
+        "y": 472,
+        "w": 280,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 280,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 280,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "brick_dmg2": {
+      "frame": {
+        "x": 652,
+        "y": 4,
+        "w": 280,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 280,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 280,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "brick_dmg3": {
+      "frame": {
+        "x": 652,
+        "y": 235,
+        "w": 280,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 280,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 280,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "brick_dmg4": {
+      "frame": {
+        "x": 940,
+        "y": 4,
+        "w": 280,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 280,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 280,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "brick_dmg5": {
+      "frame": {
+        "x": 940,
+        "y": 235,
+        "w": 280,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 280,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 280,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "stone_dmg0": {
+      "frame": {
+        "x": 1228,
+        "y": 235,
+        "w": 232,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 4,
+        "w": 232,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 232,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "stone_dmg1": {
+      "frame": {
+        "x": 1228,
+        "y": 4,
+        "w": 232,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 4,
+        "w": 232,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 232,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "stone_dmg2": {
+      "frame": {
+        "x": 1060,
+        "y": 466,
+        "w": 232,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 4,
+        "w": 232,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 232,
         "h": 228
       },
       "pivot": {
@@ -386,8 +410,8 @@
     },
     "part_brick": {
       "frame": {
-        "x": 724,
-        "y": 702,
+        "x": 1468,
+        "y": 4,
         "w": 94,
         "h": 52
       },
@@ -402,6 +426,54 @@
       "sourceSize": {
         "w": 94,
         "h": 52
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "stone_dmg3": {
+      "frame": {
+        "x": 1300,
+        "y": 459,
+        "w": 232,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 4,
+        "w": 232,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 232,
+        "h": 228
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "part_soil": {
+      "frame": {
+        "x": 1468,
+        "y": 64,
+        "w": 86,
+        "h": 62
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 86,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 86,
+        "h": 62
       },
       "pivot": {
         "x": 0.5,
@@ -410,118 +482,22 @@
     },
     "part_stone": {
       "frame": {
-        "x": 724,
-        "y": 762,
-        "w": 55,
-        "h": 37
+        "x": 1468,
+        "y": 134,
+        "w": 44,
+        "h": 70
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 55,
-        "h": 37
+        "w": 44,
+        "h": 70
       },
       "sourceSize": {
-        "w": 55,
-        "h": 37
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg6": {
-      "frame": {
-        "x": 436,
-        "y": 933,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg7": {
-      "frame": {
-        "x": 436,
-        "y": 1164,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg8": {
-      "frame": {
-        "x": 652,
-        "y": 933,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "stones_dmg9": {
-      "frame": {
-        "x": 652,
-        "y": 1164,
-        "w": 208,
-        "h": 223
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 2,
-        "w": 208,
-        "h": 223
-      },
-      "sourceSize": {
-        "w": 208,
-        "h": 228
+        "w": 44,
+        "h": 70
       },
       "pivot": {
         "x": 0.5,
@@ -533,8 +509,8 @@
     "image": "ground.png",
     "format": "RGBA8888",
     "size": {
-      "w": 864,
-      "h": 1391
+      "w": 1566,
+      "h": 700
     },
     "scale": 1
   }

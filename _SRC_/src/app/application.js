@@ -15,6 +15,7 @@ let isGamePaused = false
 
 // ticker list
 let tickerArr = []
+let tickerSet = new Set() // для быстрой проверки наличия объекта в тикере
 
 // queues
 const tickerAddQueue = new Set()
@@ -244,8 +245,10 @@ export function tickerAdd(element) {
 
     if (killQueue.has(element)) return
     
+    // если объект уже в тикере или в очереди на добавление — игнорируем
+    if (tickerSet.has(element) || tickerAddQueue.has(element)) return
+
     tickerRemoveQueue.delete(element)
-    
     tickerAddQueue.add(element)
 }
 
@@ -291,7 +294,10 @@ function tick(time) {
     // time.deltaTime - FPS rate (from 60 FPS) ~1 (= 1 FPS)    
 
     if (tickerAddQueue.size > 0) {
-        for (const obj of tickerAddQueue) tickerArr.push(obj)
+        for (const obj of tickerAddQueue) {
+            tickerArr.push(obj)
+            tickerSet.add(obj)
+        }
         tickerAddQueue.clear()
     }
             
@@ -303,23 +309,24 @@ function tick(time) {
             
         while (killArr.length > 0) {
             const obj = killArr.pop()
+            tickerSet.delete(obj)
             if (obj.kill) obj.kill()
             if (obj.destroy) obj.destroy({ children: true })
         }
     }
 }
 
-function filterTickerArrBySet( set ) {
+function filterTickerArrBySet(set) {
     let writeIndex = 0
     for (let i = 0; i < tickerArr.length; i++) {
-        if (!set.has(tickerArr[i])) {
-            tickerArr[writeIndex++] = tickerArr[i]
-        }
+        const obj = tickerArr[i]
+        if (set.has(obj)) tickerSet.delete(obj)
+        else tickerArr[writeIndex++] = obj
     }
     tickerArr.length = writeIndex
     set.clear()
 }
 
 export function isInTicker(element) {
-    return tickerArr.includes(element)
+    return tickerSet.has(element)
 }
